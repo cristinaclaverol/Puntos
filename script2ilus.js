@@ -616,4 +616,66 @@ if (typeof d3 !== 'undefined') {
   console.error("D3 no està disponible");
 }
 
+// ========================================
+// FUNCIONALIDAD DEL MENÚ DESPLEGABLE
+// ========================================
+
+function initializeMenu() {
+  console.log("Inicializando menú desplegable...");
+  const menuButton = document.getElementById('menuButton');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+  
+  console.log("MenuButton:", menuButton);
+  console.log("DropdownMenu:", dropdownMenu);
+  
+  if (menuButton && dropdownMenu) {
+    console.log("Elementos del menú encontrados correctamente");
+    
+    // Toggle del menú al hacer clic en el botón
+    menuButton.addEventListener('click', function(e) {
+      console.log("Click en botón del menú");
+      e.stopPropagation();
+      e.preventDefault();
+      dropdownMenu.classList.toggle('active');
+      console.log("Menu active:", dropdownMenu.classList.contains('active'));
+    });
+    
+    // Cerrar el menú al hacer clic fuera de él
+    document.addEventListener('click', function(e) {
+      if (!menuButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.classList.remove('active');
+      }
+    });
+    
+    // Cerrar el menú al hacer clic en un enlace
+    const menuLinks = dropdownMenu.querySelectorAll('a');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        console.log("Click en enlace:", this.textContent);
+        dropdownMenu.classList.remove('active');
+      });
+    });
+    
+    // Cerrar el menú con la tecla ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && dropdownMenu.classList.contains('active')) {
+        dropdownMenu.classList.remove('active');
+      }
+    });
+    
+    console.log("Menú inicializado correctamente");
+  } else {
+    console.error("No se encontraron los elementos del menú");
+  }
+}
+
+// Inicializar el menú cuando el DOM esté listo
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeMenu);
+} else {
+  // El DOM ya está cargado
+  initializeMenu();
+}
+
 console.log("Script terminat");
